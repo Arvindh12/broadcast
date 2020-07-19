@@ -1,0 +1,11 @@
+.linkstyle{
+    color: rgba(255,255,255,.5);
+    display: block;
+    padding: .5rem 1rem;
+}
+.linkstyle:hover {
+    color: rgba(255,255,255,.75);
+}
+.findfriends{
+    padding: 2px 4px;
+}

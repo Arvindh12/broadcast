@@ -28,7 +28,7 @@ function Login({ setCurrentUser }) {
         }
         else {
           console.log("password matching")
-          setCurrentUser(data)
+          setCurrentUser(data[0])
         }
       });
   };

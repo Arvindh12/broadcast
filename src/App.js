@@ -1,13 +1,16 @@
 import React from "react";
 import Login from "./pages/Login";
 import HeaderNavbar from "./components/HeaderNavbar";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.css";
 import Register from "./pages/Register";
 import Home from './pages/Home'
+import Profile from "./pages/Profile";
+import CreatePost from "./pages/CreatePost"
+import {connect} from 'react-redux'
 
-function App() {
+function App({currentUser}) {
   return (
     <div className="App">
       <HeaderNavbar />
@@ -19,11 +22,24 @@ function App() {
           <Register />
         </Route>
         <Route exact path="/home">
-          <Home />
+          {currentUser === null ? <Redirect to= "/login" /> :   <Home /> }
         </Route>
+        <Route exact path="/profile" >
+          {currentUser === null ? <Redirect to= "/login" /> :  <Profile /> }
+        </Route>
+        <Route exact path="/create">
+        {currentUser === null ? <Redirect to= "/login" /> :   <CreatePost /> }
+        </Route>
+        <Route exact path="/register">
+          <Register />
+          </Route>
       </Switch>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  currentUser : state.user.currentUser
+})
+
+export default connect(mapStateToProps)(App);

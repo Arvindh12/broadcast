@@ -1,21 +1,24 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import FindFriends from "../components/FindFriends";
+import NewsFeed from "../components/NewsFeed";
 
 function Home() {
-    return (
-    <Container>
-        <Row>
-            <Col md={4}>
-            find friends
-            </Col>
-            <Col md={8}>
-            my posts...
-            </Col>
-        </Row>
+  return (
+    <Container fluid className="mt-3">
+      <Row>
+        <Col md={3}>
+          <FindFriends />
+        </Col>
+        <Col md={9}>
+          NEWS FEED
+          <NewsFeed />
+        </Col>
+      </Row>
     </Container>
-    )
+  );
 }
 
-export default Home
+export default Home;

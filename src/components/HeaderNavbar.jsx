@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { connect } from "react-redux";
+import {Link} from "react-router-dom"
 
 
 function HeaderNavbar({ currentUser }) {
@@ -20,10 +21,10 @@ function HeaderNavbar({ currentUser }) {
             ""
           ) : (
             <>
-              <Nav.Link>Home</Nav.Link>
-              <Nav.Link>Create Post</Nav.Link>
-              <Nav.Link>My Post</Nav.Link>
-              <Nav.Link>Profile</Nav.Link>
+              <Link to="/home" className="linkstyle">Home </Link>
+              <Link to="/create" className="linkstyle"> Create Post  </Link>
+              <Link to="/post" className="linkstyle">My Post</Link>
+              <Link to="/profile" className="linkstyle"> Profile </Link>
             </>
           )}
         </Nav>
