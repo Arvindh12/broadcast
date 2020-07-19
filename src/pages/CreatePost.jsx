@@ -51,7 +51,7 @@ if(formState.content.length > 200 ){
       createdAt: new Date(),
     };
 
-    const postdata = await fetch("http://localhost:7070/posts", {
+    const postdata = await fetch("https://broadcast-server-arvindh.herokuapp.com/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ if(formState.content.length > 200 ){
     console.log("user", user);
 
     var userdata = await fetch(
-      `http://localhost:7070/users/${currentUser.id} `,
+      `https://broadcast-server-arvindh.herokuapp.com/users/${currentUser.id} `,
       {
         method: "PUT",
         headers: {

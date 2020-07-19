@@ -24,7 +24,7 @@ function FindFriends({currentUser}) {
         console.log(formState)
         // handle validation 
 
-      var results = await fetch(`http://localhost:7070/users?userHandle_like=${formState.friends}`).then((res) => res.json())
+      var results = await fetch(`https://broadcast-server-arvindh.herokuapp.com/users?userHandle_like=${formState.friends}`).then((res) => res.json())
       console.log(results)
 
       setFormState({...formState , results})

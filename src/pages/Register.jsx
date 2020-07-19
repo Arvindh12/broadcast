@@ -32,27 +32,21 @@ function Register({setCurrentUser}) {
       console.log("failed")
       return
     }
-    else {
-      console.log("passed")
-      setError({...error , firstName : [false , ""]})
-    }
 
     if (formState.lastName.length > 15 || formState.lastName.length < 2 ){
       setError({...error , lastName : [true , "Number of charters should be between 2 and 15"] ,  firstName : [false , ""] })
       return
     }
-    else {
-      setError({...error ,firstName : [false , ""] , lastName : [false , '']})
-    }
 
     var regex = /^[A-Za-z0-9 ]+$/
 
     if (formState.userHandle.length > 10 || formState.userHandle.length < 2 ){
-      setError({...error , userHandle : [true , "Number of charters should be between 2 and 10"]})
+      setError({...error , userHandle : [true , "Number of charters should be between 2 and 10"] , firstName : [false , ""] ,  lastName : [false , ""]})
       return
     }
-    else if ( ! regex.test(formState.userHandle) ){
-      setError({...error , userHandle : [true , "User handle should not contain any special characters"]})
+
+   if ( ! regex.test(formState.userHandle) ){
+      setError({...error , userHandle : [true , "User handle should not contain any special characters"] , firstName : [false , ""] ,  lastName : [false , ""]})
       return
     }
     else {
@@ -61,36 +55,36 @@ function Register({setCurrentUser}) {
 
     
     if (formState.gender === '' ){
-      setError({...error , gender : [true , "Select an option"]})
+      setError({...error , gender : [true , "Select an option"],  userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] })
       return
     }
     else {
-      setError({...error , gender : [false , '']})
+      setError({...error , gender : [false , ''] ,  userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] })
     }
 
 
     if (formState.status === '' ){
-      setError({...error , status : [true , "Select an option"]})
+      setError({...error , status : [true , "Select an option"] , userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] })
       return
     }
     else {
-      setError({...error, status : [false , '']})
+      setError({...error, status : [false , ''] , userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] , gender : [false , ''] })
     }
 
     
     if (formState.password.length > 15 || formState.password.length < 2 ){
-      setError({...error , password : [true , "Password should be between 2 and 15 characters"]})
+      setError({...error , password : [true , "Password should be between 2 and 15 characters"] , status : [false , ''] , userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] , gender : [false , ''] })
       return
     }
     else {
-      setError({...error, password : [false , '']})
+      setError({...error, password : [false , ''] , status : [false , ''] , userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] , gender : [false , ''] })
     }
 
 
  
     // fetch () to fiind if the userhandle is unique
 
-    var userHandleMatch = await fetch(`http://localhost:7070/users?userHandle=${formState.userHandle}`).then(res => res.json())
+    var userHandleMatch = await fetch(`https://broadcast-server-arvindh.herokuapp.com/users?userHandle=${formState.userHandle}`).then(res => res.json())
     
     if (userHandleMatch.length > 0 ){
       setError({...error , userHandle : [true , "The User Handle is taken"]})
@@ -100,13 +94,26 @@ function Register({setCurrentUser}) {
       setError({...error, userHandle : [false , '']})
     }
 
+    // fetch () to find if the email is unique 
+
+    var emailHandleMatch = await fetch(`https://broadcast-server-arvindh.herokuapp.com/users?emailID=${formState.emailID}`).then(res => res.json())
+    
+    if (emailHandleMatch.length > 0 ){
+      setError({...error , emailTaken : [true , "The Email ID exists"]})
+      return
+    }
+    else {
+      setError({...error, emailTaken : [false , '']})
+    }
+
+    setError( {userHandle : [false , '' ] , emailTaken : [ false , '' ] , firstName : [false , ''] , lastName : [false ,''] , gender : [false , ''] , status : [false , ''] , password :[false ,'']} )
     console.log(formState)
 
     const user = {...formState , posts : [] , followers : [] , following : [] }
 
     //Post request to json - server
 
-    const ResponseData = await fetch("http://localhost:7070/users", {
+    const ResponseData = await fetch("https://broadcast-server-arvindh.herokuapp.com/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

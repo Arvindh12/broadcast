@@ -19,7 +19,7 @@ let history = useHistory()
     console.log(formState);
 
     fetch(
-      `http://localhost:7070/users?email=${formState.email}&password=${formState.password}`
+      `https://broadcast-server-arvindh.herokuapp.com/users?email=${formState.email}&password=${formState.password}`
     )
       .then((res) => res.json())
       .then((data) => {

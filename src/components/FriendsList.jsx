@@ -16,7 +16,7 @@ function FriendsList({ userHandle, currentUser, fulldata, setCurrentUser }) {
     };
 
     const ResponseUserData = await fetch(
-      `http://localhost:7070/users/${currentUser.id} `,
+      `https://broadcast-server-arvindh.herokuapp.com/users/${currentUser.id} `,
       {
         method: "PUT",
         headers: {
@@ -34,7 +34,7 @@ function FriendsList({ userHandle, currentUser, fulldata, setCurrentUser }) {
     };
 
     const ResponseFollowerData = await fetch(
-      `http://localhost:7070/users/${fulldata.id} `,
+      `https://broadcast-server-arvindh.herokuapp.com/users/${fulldata.id} `,
       {
         method: "PUT",
         headers: {
@@ -55,7 +55,7 @@ function FriendsList({ userHandle, currentUser, fulldata, setCurrentUser }) {
     };
 
     const ResponseUserData = await fetch(
-      `http://localhost:7070/users/${currentUser.id} `,
+      `https://broadcast-server-arvindh.herokuapp.com/users/${currentUser.id} `,
       {
         method: "PUT",
         headers: {
@@ -73,7 +73,7 @@ function FriendsList({ userHandle, currentUser, fulldata, setCurrentUser }) {
     };
 
     const ResponseFollowerData = await fetch(
-      `http://localhost:7070/users/${fulldata.id} `,
+      `https://broadcast-server-arvindh.herokuapp.com/users/${fulldata.id} `,
       {
         method: "PUT",
         headers: {
