@@ -2,11 +2,25 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { connect } from "react-redux";
-import {Link} from "react-router-dom"
+import {Link , useHistory} from "react-router-dom"
+import { Button } from "react-bootstrap";
+import { setCurrentUser } from "../redux/user/user.actions";
+import { updatePost } from "../redux/posts/posts.actions";
 
 
-function HeaderNavbar({ currentUser }) {
+function HeaderNavbar({ currentUser ,removeCurrentUser,clearPosts }) {
+
   console.log(currentUser)
+
+  const handleLogOut = () => {
+    removeCurrentUser();
+    clearPosts();
+  }
+  let history = useHistory()
+  const handleLogIn = () => {
+    history.push("/login")
+  }
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand href="#home">
@@ -23,17 +37,17 @@ function HeaderNavbar({ currentUser }) {
             <>
               <Link to="/home" className="linkstyle">Home </Link>
               <Link to="/create" className="linkstyle"> Create Post  </Link>
-              <Link to="/post" className="linkstyle">My Post</Link>
+              <Link to="/myposts" className="linkstyle">My Post</Link>
               <Link to="/profile" className="linkstyle"> Profile </Link>
             </>
           )}
         </Nav>
-        <Nav>
+        <Nav >
          
           {currentUser === null ? (
-             <Nav.Link>Login</Nav.Link>
+             <Button variant="secondary" onClick={handleLogIn} >  Login </Button>
           ) : (
-            <Nav.Link>Logout</Nav.Link>
+            <Button variant="danger" onClick={handleLogOut} >Logout</Button>
           )}
         </Nav>
       </Navbar.Collapse>
@@ -45,4 +59,9 @@ const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
 });
 
-export default connect(mapStateToProps)(HeaderNavbar);
+const mapDispatchToProps = (dispatch) => ({
+  removeCurrentUser : () => dispatch(setCurrentUser(null)) ,
+  clearPosts : () => dispatch(updatePost([]))
+ })
+
+export default connect(mapStateToProps,mapDispatchToProps)(HeaderNavbar);

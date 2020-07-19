@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Home from './pages/Home'
 import Profile from "./pages/Profile";
 import CreatePost from "./pages/CreatePost"
+import MyPosts from './pages/MyPosts'
 import {connect} from 'react-redux'
 
 function App({currentUser}) {
@@ -16,6 +17,9 @@ function App({currentUser}) {
       <HeaderNavbar />
       <Switch>
         <Route exact path="/">
+          <Login />
+        </Route>
+        <Route exact path="/login">
           <Login />
         </Route>
         <Route exact path="/register">
@@ -30,6 +34,10 @@ function App({currentUser}) {
         <Route exact path="/create">
         {currentUser === null ? <Redirect to= "/login" /> :   <CreatePost /> }
         </Route>
+        <Route exact path="/myposts">
+        {currentUser === null ? <MyPosts /> :   <MyPosts /> }
+        </Route>
+
         <Route exact path="/register">
           <Register />
           </Route>

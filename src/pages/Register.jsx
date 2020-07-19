@@ -6,8 +6,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {connect} from 'react-redux'
 import { setCurrentUser } from "../redux/user/user.actions";
+import { useHistory } from "react-router-dom";
 
-function Register() {
+function Register({setCurrentUser}) {
+
+  let history = useHistory();
 
   const handleOnChange = (event) => {
     var name = event.target.name;
@@ -18,10 +21,84 @@ function Register() {
   };
 
   const [formState, setFormState] = useState({firstName: "" , lastName : "" ,userHandle: "" , emailID: "", gender: "" , status : "" , password : ""});
+  const [error, setError] = useState({userHandle : [false , '' ] , emailTaken : [ false , '' ] , firstName : [false , ''] , lastName : [false ,''] , gender : [false , ''] , status : [false , ''] , password :[false ,'']})
 
   const handleOnSumbit = async (event) => {
     event.preventDefault();
     //Validate the form 
+
+    if (formState.firstName.length > 15 || formState.firstName.length < 2 ){
+      setError({...error , firstName : [true , "Number of charters should be between 2 and 15"]})
+      console.log("failed")
+      return
+    }
+    else {
+      console.log("passed")
+      setError({...error , firstName : [false , ""]})
+    }
+
+    if (formState.lastName.length > 15 || formState.lastName.length < 2 ){
+      setError({...error , lastName : [true , "Number of charters should be between 2 and 15"] ,  firstName : [false , ""] })
+      return
+    }
+    else {
+      setError({...error ,firstName : [false , ""] , lastName : [false , '']})
+    }
+
+    var regex = /^[A-Za-z0-9 ]+$/
+
+    if (formState.userHandle.length > 10 || formState.userHandle.length < 2 ){
+      setError({...error , userHandle : [true , "Number of charters should be between 2 and 10"]})
+      return
+    }
+    else if ( ! regex.test(formState.userHandle) ){
+      setError({...error , userHandle : [true , "User handle should not contain any special characters"]})
+      return
+    }
+    else {
+      setError({...error, userHandle : [false , ''] ,firstName : [false , ""] , lastName : [false , ''] })
+    }
+
+    
+    if (formState.gender === '' ){
+      setError({...error , gender : [true , "Select an option"]})
+      return
+    }
+    else {
+      setError({...error , gender : [false , '']})
+    }
+
+
+    if (formState.status === '' ){
+      setError({...error , status : [true , "Select an option"]})
+      return
+    }
+    else {
+      setError({...error, status : [false , '']})
+    }
+
+    
+    if (formState.password.length > 15 || formState.password.length < 2 ){
+      setError({...error , password : [true , "Password should be between 2 and 15 characters"]})
+      return
+    }
+    else {
+      setError({...error, password : [false , '']})
+    }
+
+
+ 
+    // fetch () to fiind if the userhandle is unique
+
+    var userHandleMatch = await fetch(`http://localhost:7070/users?userHandle=${formState.userHandle}`).then(res => res.json())
+    
+    if (userHandleMatch.length > 0 ){
+      setError({...error , userHandle : [true , "The User Handle is taken"]})
+      return
+    }
+    else {
+      setError({...error, userHandle : [false , '']})
+    }
 
     console.log(formState)
 
@@ -35,10 +112,13 @@ function Register() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
-    }).then((res) => res.json());
+    }).then((res) => res.json());  
 
     console.log(ResponseData)
-
+    setCurrentUser(ResponseData)
+   
+    history.push("/home");
+console.log(error)
   }
 
   return (
@@ -56,6 +136,9 @@ function Register() {
                 value={formState.firstName}
                 onChange={handleOnChange}
               />
+              {error.firstName[0] ? <Form.Text className="text-danger" >
+               {error.firstName[1]}
+              </Form.Text> : <></> }
             </Form.Group>
             <Form.Group controlId="lastName">
               <Form.Label>Last Name</Form.Label>
@@ -66,6 +149,9 @@ function Register() {
                 value={formState.lastName}
                 onChange={handleOnChange}
               />
+                            {error.lastName[0] ? <Form.Text className="text-danger" >
+               {error.lastName[1]}
+              </Form.Text> : <></> }
             </Form.Group>
             <Form.Group controlId="userHandle">
               <Form.Label>UserHandle</Form.Label>
@@ -76,31 +162,47 @@ function Register() {
                 onChange={handleOnChange}
                 value={formState.userHandle}
               />
+              {error.userHandle[0] ? <Form.Text className="text-danger" >
+                {error.userHandle[1]}
+              </Form.Text> : <></> }
+
             </Form.Group>
             <Form.Group controlId="Email">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" name="emailID" onChange={handleOnChange} value={formState.emailID} />
+              <Form.Control type="email" placeholder="Enter email" name="emailID" onChange={handleOnChange} value={formState.emailID} required />
+              {error.emailTaken[0] ? <Form.Text className="text-danger" >
+                {error.emailTaken[1]}
+              </Form.Text> : <></> }
             </Form.Group>
             <Form.Group controlId="gender">
               <Form.Label>Gender</Form.Label>
               <Form.Control as="select" value={formState.gender} onChange={handleOnChange}  name="gender" >
-                <option>Select Gender</option>
+                <option value="">Select Gender</option>
                 <option value="male">male</option>
                 <option value="female">female</option>
               </Form.Control>
+              {error.gender[0] ? <Form.Text className="text-danger" >
+                {error.gender[1]}
+              </Form.Text> : <></> }
             </Form.Group>
             <Form.Group controlId="status">
               <Form.Label>Status</Form.Label>
               <Form.Control as="select" onChange={handleOnChange} value={formState.status} name="status" >
-                <option>Select Status</option>
+                <option value="">Select Status</option>
                 <option value="Single">Single</option>
                 <option value="In a relationship">In a relationship</option>
                 <option value="Maried">Maried</option>
               </Form.Control>
+              {error.status[0] ? <Form.Text className="text-danger" >
+                {error.status[1]}
+              </Form.Text> : <></> }
             </Form.Group>
             <Form.Group controlId="Password">
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" placeholder="Password" name="password" onChange={handleOnChange} value={formState.password} />
+              {error.password[0] ? <Form.Text className="text-danger" >
+                {error.password[1]}
+              </Form.Text> : <></> }
             </Form.Group>
             <Button variant="primary" type="submit">
               Register
@@ -117,4 +219,4 @@ const mapDispatchToPrps = (dispatch) => ({
   setCurrentUser : (user) => dispatch(setCurrentUser(user))
 })
 
-export default connect(mapDispatchToPrps)(Register);
+export default connect(null , mapDispatchToPrps)(Register);

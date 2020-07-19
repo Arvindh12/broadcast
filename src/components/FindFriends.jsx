@@ -8,9 +8,10 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import FriendsList from './FriendsList'
+import { connect } from "react-redux";
 
 
-function FindFriends() {
+function FindFriends({currentUser}) {
     const handleOnChange = (event) => {
         var name = event.target.name;
         var value = event.target.value;
@@ -51,10 +52,14 @@ function FindFriends() {
         </InputGroup>
       </Form>
       <ListGroup variant="flush">
-       {formState.results.map((data) => (<FriendsList userHandle = {data.userHandle} key={data.userHandle} />) ) } 
+       {formState.results.filter((data) => data.userHandle !== currentUser.userHandle).map((data) => (<FriendsList userHandle = {data.userHandle} key={data.userHandle} fulldata = {data} />) ) } 
       </ListGroup>
     </>
   );
 }
 
-export default FindFriends;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(FindFriends);

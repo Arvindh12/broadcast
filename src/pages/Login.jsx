@@ -7,16 +7,18 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import { connect } from "react-redux";
 import { setCurrentUser } from "../redux/user/user.actions";
+import {useHistory ,Link} from 'react-router-dom'
 
 function Login({ setCurrentUser }) {
   
+let history = useHistory()
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
     console.log(formState);
 
     fetch(
-      `https://broadcast-server-arvindh.herokuapp.com/users?email=${formState.email}&password=${formState.password}`
+      `http://localhost:7070/users?email=${formState.email}&password=${formState.password}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -29,6 +31,7 @@ function Login({ setCurrentUser }) {
         else {
           console.log("password matching")
           setCurrentUser(data[0])
+          history.push('/home')
         }
       });
   };
@@ -63,9 +66,7 @@ function Login({ setCurrentUser }) {
                 value={formState.email}
                 onChange={handleOnChange}
               />
-              <Form.Text className="text-danger">
-                We'll never share your email with anyone else.
-              </Form.Text>
+
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
@@ -78,6 +79,10 @@ function Login({ setCurrentUser }) {
                 onChange={handleOnChange}
               />
             </Form.Group>
+
+            <Form.Group>
+             <p> Not a user? <Link to="/register" > Sign Up </Link> </p>
+              </Form.Group>
 
             <Button variant="primary" type="submit">
               Submit

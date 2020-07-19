@@ -1,24 +1,34 @@
-import React from "react";
-import Card from "react-bootstrap/Card";
+import React, { useEffect  } from "react";
+import NewsList from '../components/NewsList'
+import {connect} from 'react-redux'
+import {updatePost} from '../redux/posts/posts.actions'
 
-function NewsFeed() {
+
+function NewsFeed({posts , setPosts , currentUser } ) {
+    useEffect(()=>{
+        fetch(`http://localhost:7070/posts?_sort=id&_order=desc`)
+        .then((res) => res.json())
+        .then((data) => {
+            setPosts(data)
+        })
+
+    },[])
+
   return (
-    <Card>
-      <Card.Header>My first post</Card.Header>
-      <Card.Body>
-        <blockquote className="blockquote mb-0">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-            posuere erat a ante.
-          </p>
-          <footer className="blockquote-footer">
-            <cite title="Source Title">post author</cite>
-          </footer>
-        </blockquote>
-      </Card.Body>
-      <Card.Footer className="text-muted">2 days ago</Card.Footer>
-    </Card>
+    <>
+ { posts.length === 0?  <p>U have nothing to see here</p>  : posts.filter((data) => currentUser.following.indexOf(data.author) !== -1 ).map(post => <NewsList post={post} key={post.id} />)}
+    </>
   );
+
 }
 
-export default NewsFeed;
+const mapStateToProps = (state) => ({
+    posts : state.posts ,
+    currentUser : state.user.currentUser
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    setPosts : (posts) => dispatch(updatePost(posts))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(NewsFeed);
