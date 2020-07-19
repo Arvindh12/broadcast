@@ -25,8 +25,8 @@ function HeaderNavbar({ currentUser ,removeCurrentUser,clearPosts }) {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand href="#home">
         {currentUser === null
-          ? "Broadcast to login"
-          : "Broadcast with out login"}
+          ? "Broadcast"
+          : "Broadcast"}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
