@@ -35,7 +35,7 @@ function App({currentUser}) {
         {currentUser === null ? <Redirect to= "/login" /> :   <CreatePost /> }
         </Route>
         <Route exact path="/myposts">
-        {currentUser === null ? <MyPosts /> :   <MyPosts /> }
+        {currentUser === null ? <Redirect to= "/login" /> :   <MyPosts /> }
         </Route>
 
         <Route exact path="/register">

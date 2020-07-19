@@ -4,9 +4,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert"
 import { connect } from "react-redux";
+import { setCurrentUser } from "../redux/user/user.actions";
 
-function CreatePost({ currentUser }) {
+function CreatePost({ currentUser , setCurrentUser }) {
   const handleOnChange = (event) => {
     var name = event.target.name;
     var value = event.target.value;
@@ -17,8 +19,31 @@ function CreatePost({ currentUser }) {
 
   const handleOnSubmit = async (event) => {
     // validation code here
-
     event.preventDefault();
+   
+    if(formState.title.length < 6 ){
+      console.log("Title should be greater than 6 characters.")
+      setAlert({ state : true , message : "Title should be greater than 6 characters." ,variant : "danger"})
+      return
+    }
+if(formState.title.length > 60){
+  console.log("Title should be less than 60 characters.")
+  setAlert({ state : true , message : "Title should be less than 60 characters." ,variant : "danger"})
+  return
+}
+
+if(formState.content.length < 10 ){
+  console.log("Content should be greater than 10 characters.")
+  setAlert({ state : true , message : "Content should be greater than 10 characters." ,variant : "danger"})
+  return
+}
+if(formState.content.length > 200 ){
+  console.log("Content should be less than 200 characters.")
+  setAlert({ state : true , message : "Content should be less than 200 characters." ,variant : "danger"})
+  return
+}
+
+
 
     const post = {
       ...formState,
@@ -56,6 +81,9 @@ function CreatePost({ currentUser }) {
 
     console.log(userdata);
 
+    setCurrentUser(userdata)
+
+    setAlert({state : true , message : "Post has been submitted successfully" , variant : "success" })
     // set state with new user data
   };
 
@@ -65,6 +93,8 @@ function CreatePost({ currentUser }) {
     author: "",
     createdAt: "",
   });
+
+  const [alert, setAlert] = useState({ state : false , message : "" ,variant : "danger" })
 
   return (
     <Container>
@@ -114,6 +144,11 @@ function CreatePost({ currentUser }) {
               </Form.Group>
             </Form.Row>
           </Form>
+          {alert.state ?  
+          <Alert variant={alert.variant} onClose={() => setAlert(false)} dismissible className="mt-3">
+        {alert.message}
+      </Alert>
+      : <> </> }
         </Col>
       </Row>
     </Container>
@@ -123,5 +158,8 @@ function CreatePost({ currentUser }) {
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
 });
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+})
 
-export default connect(mapStateToProps)(CreatePost);
+export default connect(mapStateToProps,mapDispatchToProps)(CreatePost);

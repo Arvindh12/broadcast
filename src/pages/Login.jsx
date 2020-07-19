@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import Alert from "react-bootstrap/Alert"
 import { connect } from "react-redux";
 import { setCurrentUser } from "../redux/user/user.actions";
 import {useHistory ,Link} from 'react-router-dom'
@@ -26,6 +27,7 @@ let history = useHistory()
         if(data.length === 0){
           // Password not matching 
           console.log("password not matching")
+          setAlert(true)
           return
         }
         else {
@@ -45,6 +47,7 @@ let history = useHistory()
   };
 
   const [formState, setFormState] = useState({ email: "", password: "" });
+  const [alert, setAlert] = useState(false)
 
   return (
     <Container className="mt-5">
@@ -88,6 +91,11 @@ let history = useHistory()
               Submit
             </Button>
           </Form>
+          {alert ?  
+          <Alert variant="danger" onClose={() => setAlert(false)} dismissible className="mt-3">
+        Oh snap! Email / Password incorrect 
+      </Alert>
+      : <> </> }
         </Col>
       </Row>
     </Container>

@@ -1,24 +1,56 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
+import Table from "react-bootstrap/Table";
+import Container from "react-bootstrap/Container";
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
-function Profile({currentUser}) {
-    return (
-        <div>
-            First Name : {currentUser.firstName}
-            Last Name : {currentUser.lastName}
-            Handle : {currentUser.userHandle}
-            Email : {currentUser.emailID}
-            Status : {currentUser.status}
-            Gender :  {currentUser.gender}
-            Followers :  {currentUser.followers.length}
-            Following : {currentUser.following.length}
-
-        </div>
-    )
+function Profile({ currentUser }) {
+  return (
+    <Container className="mt-4">
+        <Row>
+            <Col>
+    <Table striped bordered hover>
+      <tbody>
+        <tr>
+          <td> First Name : </td>
+          <td>{currentUser.firstName}</td>
+        </tr>
+        <tr>
+          <td> Last Name : </td>
+          <td>{currentUser.lastName}</td>
+        </tr>
+        <tr>
+          <td> Handle : </td>
+          <td>{currentUser.userHandle}</td>
+        </tr>
+        <tr>
+          <td> Status : </td>
+          <td>{currentUser.status}</td>
+        </tr>
+        <tr>
+          <td> Gender : </td>
+          <td>{currentUser.gender}</td>
+        </tr>
+        <tr>
+          <td> Followers :</td>
+          <td>{currentUser.followers.length}</td>
+        </tr>
+        <tr>
+          <td> Following :</td>
+          <td>{currentUser.following.length}</td>
+        </tr>
+      </tbody>
+      
+    </Table>
+    </Col>
+    </Row>
+  </Container>
+  );
 }
 
 const mapStateToProp = (state) => ({
-    currentUser : state.user.currentUser
-})
- 
-export default connect(mapStateToProp)(Profile)
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProp)(Profile);

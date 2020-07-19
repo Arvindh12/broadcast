@@ -1,6 +1,6 @@
 import React from "react";
 import NewsList from "../components/NewsList";
-import { Container, Row, Col , Jumbotron } from "react-bootstrap";
+import { Container, Row, Col  } from "react-bootstrap";
 import { connect } from "react-redux";
 import Paper from '@material-ui/core/Paper'
 
@@ -13,9 +13,9 @@ function MyPosts({ currentUser }) {
           <h2 className= "py-4 pl-2" > My Posts</h2>
              </Paper>
 
-          {/* {currentUser.posts.map((data) => (
+           {currentUser.posts.map((data) => (
             <NewsList post={data} key={data.id} className="mt-3" />
-          ))} */}
+          ))} 
         </Col>
       </Row>
     </Container>
