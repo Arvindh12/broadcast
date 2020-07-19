@@ -6,7 +6,7 @@ import {updatePost} from '../redux/posts/posts.actions'
 
 function NewsFeed({posts , setPosts , currentUser } ) {
     useEffect(()=>{
-        fetch(`http://localhost:7070/posts?_sort=id&_order=desc`)
+        fetch(`https://broadcast-server-arvindh.herokuapp.com/posts?_sort=id&_order=desc`)
         .then((res) => res.json())
         .then((data) => {
             setPosts(data)
